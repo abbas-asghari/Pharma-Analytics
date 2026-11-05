@@ -1,0 +1,39 @@
+{
+  "sqlite_integrity": "ok",
+  "foreign_key_errors": 0,
+  "matches_postgresql_month_distribution": true,
+  "summary": [
+    {
+      "year": 1401,
+      "rows": 56649,
+      "rows_with_month": 0,
+      "units": 57606659338,
+      "value": 1062507949045815.1,
+      "annual_view_value": 1062507949045814.6
+    },
+    {
+      "year": 1402,
+      "rows": 65073,
+      "rows_with_month": 0,
+      "units": 53940718165,
+      "value": 1634538034537490,
+      "annual_view_value": 1634538034537490
+    },
+    {
+      "year": 1403,
+      "rows": 623069,
+      "rows_with_month": 623069,
+      "units": 57462538096,
+      "value": 2321446718850354,
+      "annual_view_value": 2321446718850354
+    },
+    {
+      "year": 1404,
+      "rows": 84224,
+      "rows_with_month": 0,
+      "units": 57816859168,
+      "value": 3688056906766170,
+      "annual_view_value": 3688056906766170
+    }
+  ]
+}

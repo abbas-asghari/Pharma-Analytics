@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="تحلیل تعاملی بازار دارویی ایران؛ فروش، رشد، شرکت‌ها، ATC و OTC در سال‌های ۱۴۰۱ تا ۱۴۰۴">
+<title>دیدبان دارو | تحلیل بازار دارویی ایران</title><link rel="stylesheet" href="style.css">
+<script defer src="vendor/echarts.min.js"></script><script defer src="app.js"></script></head>
+<body>
+<aside class="sidebar">
+ <a class="brand" href="#overview"><span class="brand-mark">✦</span><span>دیدبان دارو<small>PHARMA ANALYTICS</small></span></a>
+ <div class="workspace"><span class="live-dot"></span><div>بازار دارویی ایران<small>آمارنامه ۱۴۰۱ — ۱۴۰۴</small></div><span class="tiny-tag">BI</span></div>
+ <p class="nav-caption">نمای کلی</p>
+ <nav aria-label="بخش‌های داشبورد">
+  <button class="nav active" data-page="overview"><span>◫</span> داشبورد بازار <small>۱–۳</small></button>
+  <p class="nav-caption">بازیگران بازار</p>
+  <button class="nav" data-page="suppliers"><span>▦</span> تأمین‌کنندگان <small>۴–۵</small></button>
+  <button class="nav" data-page="distributors"><span>⇄</span> شرکت‌های پخش <small>۶–۷</small></button>
+  <p class="nav-caption">بخش‌بندی بازار</p>
+  <button class="nav" data-page="atc"><span>◈</span> گروه‌های درمانی ATC <small>۸–۹</small></button>
+  <button class="nav" data-page="otc"><span>⊕</span> بدون نسخه / نسخه‌ای <small>۱۰</small></button>
+  <p class="nav-caption">درباره تحلیل</p>
+  <button class="nav" data-page="method"><span>≡</span> روش، داده و فایل‌ها</button>
+ </nav>
+ <div class="sidebar-foot"><span class="live-dot"></span> تحلیل از دیتابیس SQLite<small>اعداد واقعی · فیلترهای تعاملی</small></div>
+</aside>
+<div class="shell">
+ <header class="topbar"><div class="breadcrumb">هوش بازار دارویی <span>/</span> <b id="breadcrumb">داشبورد بازار</b></div><div class="top-actions"><span class="period-badge">۱۴۰۱ — ۱۴۰۴</span><button id="reset" class="button subtle">↺ حالت اصلی تمرین</button><button id="export" class="button primary" disabled>↓ خروجی CSV</button></div></header>
+ <main>
+  <div class="heading"><div><div class="eyebrow">IRAN PHARMACEUTICAL MARKET</div><h1 id="page-title">داشبورد بازار دارویی ایران</h1><p id="page-description">تصویری روشن از فروش، رشد و ترکیب بازار؛ بر پایه آمارنامه دارویی.</p></div><div class="heading-badge"><span class="live-dot"></span><span id="scope-label">مقایسه سالانه</span></div></div>
+  <form id="filters" class="filters" aria-label="فیلترهای تحلیل">
+   <label>سال پایه<select id="base" disabled><option>۱۴۰۱</option></select></label>
+   <label>سال مقایسه<select id="target" disabled><option>۱۴۰۲</option></select></label>
+   <label class="company-filter">تأمین‌کننده<input id="supplier" list="supplier-list" placeholder="همه تأمین‌کنندگان" autocomplete="off" disabled><datalist id="supplier-list"></datalist></label>
+   <label class="company-filter">شرکت پخش<input id="distributor" list="distributor-list" placeholder="همه پخش‌کنندگان" autocomplete="off" disabled><datalist id="distributor-list"></datalist></label>
+   <label>گروه درمانی<select id="atc" disabled><option value="">همه گروه‌ها</option></select></label>
+   <label>وضعیت نسخه<select id="otc" disabled><option value="-1">همه</option><option value="1">OTC · بدون نسخه</option><option value="0">Rx · نسخه‌ای</option><option value="2">نامشخص</option></select></label>
+   <label>منشأ<select id="origin" disabled><option value="">همه</option></select></label>
+   <label class="search-filter">جست‌وجوی محصول<input id="search" placeholder="نام دارو، برند یا IRC…" disabled></label>
+   <button class="button primary" id="apply" disabled type="submit">اعمال فیلتر</button>
+  </form>
+  <div id="status" class="status" role="status" aria-live="polite"><span class="spinner"></span> در حال آماده‌سازی داشبورد…</div>
+  <div id="active-filters" class="active-filters"></div>
+  <div id="content" aria-busy="true"></div>
+  <footer><span>دیدبان دارو <i>·</i> تحلیل آمارنامه دارویی ایران</span><span>ارزش فروش بر پایه قیمت مصرف‌کننده · واحد مبنا: ریال</span></footer>
+ </main>
+</div>
+<noscript>برای نمایش داشبورد، JavaScript مرورگر را فعال کنید.</noscript>
+</body></html>

@@ -1,0 +1,128 @@
+{
+  "status": "passed",
+  "filter_scenarios": [
+    {
+      "filters": {},
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "supplier": 5
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "distributor": 14
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "atc": "?"
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "otc": 1
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "origin": "وارداتی",
+        "atc": "L"
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "base": 1403,
+        "target": 1404
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "search": "AMOXICILLIN",
+        "pattern": "%AMOXICILLIN%"
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    },
+    {
+      "filters": {
+        "search": "NO_MATCH_999",
+        "pattern": "%NO_MATCH_999%"
+      },
+      "queries_verified": [
+        "totals",
+        "suppliers",
+        "distributors",
+        "atc",
+        "otc",
+        "origin"
+      ]
+    }
+  ],
+  "annual_partitions": "passed",
+  "top10_order": "passed",
+  "integrity": "ok",
+  "postgres_restore_tested": false
+}

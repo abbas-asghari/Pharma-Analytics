@@ -1,0 +1,4 @@
+openpyxl>=3.1,<4
+# Optional, only to query a live PostgreSQL database from Python:
+# sqlalchemy>=2,<3
+# psycopg[binary]>=3,<4

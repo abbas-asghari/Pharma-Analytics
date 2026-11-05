@@ -1,0 +1,456 @@
+{
+  "totals": [
+    {
+      "year": 1401,
+      "value": 1062507949045814.6,
+      "volume": 57606659338,
+      "products": 10907,
+      "source_rows": 56649,
+      "missing_value_rows": 0,
+      "missing_volume_rows": 0,
+      "unknown_atc_rows": 832
+    },
+    {
+      "year": 1402,
+      "value": 1634538034537490,
+      "volume": 53940718165,
+      "products": 10558,
+      "source_rows": 65073,
+      "missing_value_rows": 1,
+      "missing_volume_rows": 0,
+      "unknown_atc_rows": 0
+    }
+  ],
+  "suppliers": [
+    {
+      "id": 5,
+      "name": "داروسازی دکتر عبیدی",
+      "value_target": 103102135070913,
+      "volume_target": 3950003223,
+      "value_base": 73283735017611.12,
+      "volume_base": 3776103208,
+      "value_change": 29818400053301.875,
+      "volume_change": 173900015
+    },
+    {
+      "id": 7,
+      "name": "اکتوورکو",
+      "value_target": 91617239507468,
+      "volume_target": 3609806318,
+      "value_base": 60249625773616.59,
+      "volume_base": 3117533396,
+      "value_change": 31367613733851.406,
+      "volume_change": 492272922
+    },
+    {
+      "id": 33,
+      "name": "بهستان دارو",
+      "value_target": 72389377733003,
+      "volume_target": 85724144,
+      "value_base": 24588268919566.676,
+      "volume_base": 38198998,
+      "value_change": 47801108813436.33,
+      "volume_change": 47525146
+    },
+    {
+      "id": 1016,
+      "name": "تحقیقاتی وتولیدی سینا ژن",
+      "value_target": 71509361387486,
+      "volume_target": 11207980,
+      "value_base": 0,
+      "volume_base": 0,
+      "value_change": 71509361387486,
+      "volume_change": 11207980
+    },
+    {
+      "id": 2,
+      "name": "کوبل دارو",
+      "value_target": 58505271766266,
+      "volume_target": 295454802,
+      "value_base": 32604193147901.387,
+      "volume_base": 285727368,
+      "value_change": 25901078618364.613,
+      "volume_change": 9727434
+    },
+    {
+      "id": 21,
+      "name": "داروسازی دانا",
+      "value_target": 53888480919486,
+      "volume_target": 1298136573,
+      "value_base": 31879143670673.14,
+      "volume_base": 1099537135,
+      "value_change": 22009337248812.86,
+      "volume_change": 198599438
+    },
+    {
+      "id": 171,
+      "name": "داروسازی اکسیر",
+      "value_target": 45570602415820,
+      "volume_target": 927190565,
+      "value_base": 31475871864844.27,
+      "volume_base": 1199316258,
+      "value_change": 14094730550975.73,
+      "volume_change": -272125693
+    },
+    {
+      "id": 96,
+      "name": "کارخانجات دارو پخش",
+      "value_target": 43753037379071,
+      "volume_target": 2267592844,
+      "value_base": 44456108207485.26,
+      "volume_base": 3083192231,
+      "value_change": -703070828414.2578,
+      "volume_change": -815599387
+    },
+    {
+      "id": 16,
+      "name": "البرز دارو",
+      "value_target": 41170346290259,
+      "volume_target": 2073410701,
+      "value_base": 30164858180728.87,
+      "volume_base": 2538709486,
+      "value_change": 11005488109530.129,
+      "volume_change": -465298785
+    },
+    {
+      "id": 148,
+      "name": "داروسازی تهران شیمی",
+      "value_target": 37436542557799,
+      "volume_target": 1950737383,
+      "value_base": 24719786924301.62,
+      "volume_base": 1988666050,
+      "value_change": 12716755633497.379,
+      "volume_change": -37928667
+    }
+  ],
+  "distributors": [
+    {
+      "id": 14,
+      "name": "توزیع داروپخش",
+      "value_target": 169378786289898,
+      "volume_target": 5004593550,
+      "value_base": 130547318692906.53,
+      "volume_base": 6253109532,
+      "value_change": 38831467596991.47,
+      "volume_change": -1248515982
+    },
+    {
+      "id": 24,
+      "name": "پخش هجرت",
+      "value_target": 165348634582101,
+      "volume_target": 4660689862,
+      "value_base": 114521754586417.81,
+      "volume_base": 5684157533,
+      "value_change": 50826879995683.19,
+      "volume_change": -1023467671
+    },
+    {
+      "id": 15,
+      "name": "شرکت پخش البرز",
+      "value_target": 147803653899010,
+      "volume_target": 4109291516,
+      "value_base": 95615308623280.06,
+      "volume_base": 4754138501,
+      "value_change": 52188345275729.94,
+      "volume_change": -644846985
+    },
+    {
+      "id": 6,
+      "name": "الیت دارو",
+      "value_target": 99524548923369,
+      "volume_target": 3546567608,
+      "value_base": 61780894132820,
+      "volume_base": 3042223402,
+      "value_change": 37743654790549,
+      "volume_change": 504344206
+    },
+    {
+      "id": 1,
+      "name": "آدوراطب",
+      "value_target": 133613243894605,
+      "volume_target": 3450923184,
+      "value_base": 88127696366530.72,
+      "volume_base": 3364664382,
+      "value_change": 45485547528074.28,
+      "volume_change": 86258802
+    },
+    {
+      "id": 46,
+      "name": "پخش فردوس",
+      "value_target": 81264729271084,
+      "volume_target": 3292760821,
+      "value_base": 55874620123715,
+      "volume_base": 4016932598,
+      "value_change": 25390109147369,
+      "volume_change": -724171777
+    },
+    {
+      "id": 76,
+      "name": "سینا پخش ژن",
+      "value_target": 51799078784920,
+      "volume_target": 2968060991,
+      "value_base": 37207584101588,
+      "volume_base": 2860508332,
+      "value_change": 14591494683332,
+      "volume_change": 107552659
+    },
+    {
+      "id": 1017,
+      "name": "پخش رازی",
+      "value_target": 106859551843014,
+      "volume_target": 2830243604,
+      "value_base": 0,
+      "volume_base": 0,
+      "value_change": 106859551843014,
+      "volume_change": 2830243604
+    },
+    {
+      "id": 1035,
+      "name": "پخش دارویی اکسیر",
+      "value_target": 57494693712295,
+      "volume_target": 2195210475,
+      "value_base": 0,
+      "volume_base": 0,
+      "value_change": 57494693712295,
+      "volume_change": 2195210475
+    },
+    {
+      "id": 62,
+      "name": "شرکت مدیریت منابع تجاری ایده گستران زمان",
+      "value_target": 51829407645980,
+      "volume_target": 2037083421,
+      "value_base": 43002123970953,
+      "volume_base": 2297746375,
+      "value_change": 8827283675027,
+      "volume_change": -260662954
+    }
+  ],
+  "atc": [
+    {
+      "year": 1401,
+      "category": "?",
+      "value": 20274044126360.367,
+      "volume": 142809982
+    },
+    {
+      "year": 1401,
+      "category": "A",
+      "value": 176208173620015.22,
+      "volume": 11387962131
+    },
+    {
+      "year": 1402,
+      "category": "A",
+      "value": 279155892124122,
+      "volume": 11101997567
+    },
+    {
+      "year": 1401,
+      "category": "B",
+      "value": 133661846855636.44,
+      "volume": 3257835966
+    },
+    {
+      "year": 1402,
+      "category": "B",
+      "value": 193067927803401,
+      "volume": 3062878006
+    },
+    {
+      "year": 1401,
+      "category": "C",
+      "value": 65274788933860.68,
+      "volume": 11113061244
+    },
+    {
+      "year": 1402,
+      "category": "C",
+      "value": 99684771098904,
+      "volume": 10078372984
+    },
+    {
+      "year": 1401,
+      "category": "D",
+      "value": 22438725507504.293,
+      "volume": 187475745
+    },
+    {
+      "year": 1402,
+      "category": "D",
+      "value": 29599717852862,
+      "volume": 170107151
+    },
+    {
+      "year": 1401,
+      "category": "G",
+      "value": 44326763344416.73,
+      "volume": 2127641433
+    },
+    {
+      "year": 1402,
+      "category": "G",
+      "value": 59183897736300,
+      "volume": 1723427957
+    },
+    {
+      "year": 1401,
+      "category": "H",
+      "value": 24563619781967.863,
+      "volume": 2030772813
+    },
+    {
+      "year": 1402,
+      "category": "H",
+      "value": 46625231808573,
+      "volume": 1912431082
+    },
+    {
+      "year": 1401,
+      "category": "J",
+      "value": 151294887577879.62,
+      "volume": 3581370567
+    },
+    {
+      "year": 1402,
+      "category": "J",
+      "value": 244550074634271,
+      "volume": 3513587764
+    },
+    {
+      "year": 1401,
+      "category": "L",
+      "value": 95442839065820.77,
+      "volume": 326802017
+    },
+    {
+      "year": 1402,
+      "category": "L",
+      "value": 199210213038549,
+      "volume": 356139892
+    },
+    {
+      "year": 1401,
+      "category": "M",
+      "value": 62277065982409.305,
+      "volume": 4120076393
+    },
+    {
+      "year": 1402,
+      "category": "M",
+      "value": 84229749473362,
+      "volume": 3688827601
+    },
+    {
+      "year": 1401,
+      "category": "N",
+      "value": 137256850361195.55,
+      "volume": 13061868644
+    },
+    {
+      "year": 1402,
+      "category": "N",
+      "value": 193970935939128,
+      "volume": 12080561989
+    },
+    {
+      "year": 1401,
+      "category": "P",
+      "value": 6949472167632.613,
+      "volume": 960537814
+    },
+    {
+      "year": 1402,
+      "category": "P",
+      "value": 12874209737420,
+      "volume": 954236894
+    },
+    {
+      "year": 1401,
+      "category": "R",
+      "value": 81214644547469.36,
+      "volume": 4836956227
+    },
+    {
+      "year": 1402,
+      "category": "R",
+      "value": 133266672280954,
+      "volume": 4720189402
+    },
+    {
+      "year": 1401,
+      "category": "S",
+      "value": 16664244798685.318,
+      "volume": 256041758
+    },
+    {
+      "year": 1402,
+      "category": "S",
+      "value": 26444113632397,
+      "volume": 269073574
+    },
+    {
+      "year": 1401,
+      "category": "V",
+      "value": 24659982374964.99,
+      "volume": 215446604
+    },
+    {
+      "year": 1402,
+      "category": "V",
+      "value": 32674627377247,
+      "volume": 308886302
+    }
+  ],
+  "otc": [
+    {
+      "year": 1401,
+      "category": "OTC",
+      "value": 136336029733047.23,
+      "volume": 12087776515
+    },
+    {
+      "year": 1402,
+      "category": "OTC",
+      "value": 177056937532015,
+      "volume": 11235508510
+    },
+    {
+      "year": 1401,
+      "category": "Rx",
+      "value": 926171919312769.9,
+      "volume": 45518882823
+    },
+    {
+      "year": 1402,
+      "category": "Rx",
+      "value": 1457481097005475,
+      "volume": 42705209655
+    }
+  ],
+  "origin": [
+    {
+      "year": 1401,
+      "category": "تولیدی",
+      "value": 924003415452831.6,
+      "volume": 57071263277
+    },
+    {
+      "year": 1402,
+      "category": "تولیدی",
+      "value": 1322541741523656,
+      "volume": 53245070267
+    },
+    {
+      "year": 1401,
+      "category": "وارداتی",
+      "value": 138504533592982.86,
+      "volume": 535396061
+    },
+    {
+      "year": 1402,
+      "category": "وارداتی",
+      "value": 311996293013834,
+      "volume": 695647898
+    }
+  ]
+}

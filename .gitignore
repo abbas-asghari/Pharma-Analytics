@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+# Uncompressed browser DB is reproducible from .gz and kept out of git.
+docs/data/dashboard.sqlite
