@@ -1,4 +1,4 @@
-importScripts('vendor/sql-wasm.js','queries.js?v=20261106d');
+importScripts('vendor/sql-wasm.js','queries.js?v=20261106e');
 let db;
 function query(sql, params={}) {
  const stmt=db.prepare(sql);const rows=[];
