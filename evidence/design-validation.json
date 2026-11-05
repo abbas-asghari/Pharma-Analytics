@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "year": 1401,
+      "metric": "value",
+      "visible_share_total": 100.0,
+      "market_total_preserved": true
+    },
+    {
+      "year": 1401,
+      "metric": "volume",
+      "visible_share_total": 100.0,
+      "market_total_preserved": true
+    },
+    {
+      "year": 1402,
+      "metric": "value",
+      "visible_share_total": 100.0,
+      "market_total_preserved": true
+    },
+    {
+      "year": 1402,
+      "metric": "volume",
+      "visible_share_total": 100.0,
+      "market_total_preserved": true
+    }
+  ],
+  "desktop": "1440x1000; no page overflow",
+  "mobile": "390x844; no page overflow",
+  "console_errors": 0
+}

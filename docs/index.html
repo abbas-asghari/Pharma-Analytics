@@ -2,28 +2,28 @@
 <html lang="fa" dir="rtl">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="تحلیل تعاملی بازار دارویی ایران؛ فروش، رشد، شرکت‌ها، ATC و OTC در سال‌های ۱۴۰۱ تا ۱۴۰۴">
-<title>دیدبان دارو | تحلیل بازار دارویی ایران</title><link rel="stylesheet" href="style.css">
+<title>دیدبان دارو | تحلیل بازار دارویی ایران</title><link rel="icon" type="image/svg+xml" href="brand.svg"><link rel="stylesheet" href="style.css">
 <script defer src="vendor/echarts.min.js"></script><script defer src="app.js"></script></head>
 <body>
 <aside class="sidebar">
- <a class="brand" href="#overview"><span class="brand-mark">✦</span><span>دیدبان دارو<small>PHARMA ANALYTICS</small></span></a>
+ <a class="brand" href="#overview"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#pill"></use></svg></span><span>دیدبان دارو<small>PHARMA ANALYTICS</small></span></a>
  <div class="workspace"><span class="live-dot"></span><div>بازار دارویی ایران<small>آمارنامه ۱۴۰۱ — ۱۴۰۴</small></div><span class="tiny-tag">BI</span></div>
  <p class="nav-caption">نمای کلی</p>
  <nav aria-label="بخش‌های داشبورد">
-  <button class="nav active" data-page="overview"><span>◫</span> داشبورد بازار <small>۱–۳</small></button>
+  <button class="nav active" data-page="overview"><span><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#layout-dashboard"></use></svg></span> داشبورد بازار <small>۱–۳</small></button>
   <p class="nav-caption">بازیگران بازار</p>
-  <button class="nav" data-page="suppliers"><span>▦</span> تأمین‌کنندگان <small>۴–۵</small></button>
-  <button class="nav" data-page="distributors"><span>⇄</span> شرکت‌های پخش <small>۶–۷</small></button>
+  <button class="nav" data-page="suppliers"><span><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#factory"></use></svg></span> تأمین‌کنندگان <small>۴–۵</small></button>
+  <button class="nav" data-page="distributors"><span><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#truck"></use></svg></span> شرکت‌های پخش <small>۶–۷</small></button>
   <p class="nav-caption">بخش‌بندی بازار</p>
-  <button class="nav" data-page="atc"><span>◈</span> گروه‌های درمانی ATC <small>۸–۹</small></button>
-  <button class="nav" data-page="otc"><span>⊕</span> بدون نسخه / نسخه‌ای <small>۱۰</small></button>
+  <button class="nav" data-page="atc"><span><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#layers"></use></svg></span> گروه‌های درمانی ATC <small>۸–۹</small></button>
+  <button class="nav" data-page="otc"><span><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#clipboard-list"></use></svg></span> بدون نسخه / نسخه‌ای <small>۱۰</small></button>
   <p class="nav-caption">درباره تحلیل</p>
-  <button class="nav" data-page="method"><span>≡</span> روش، داده و فایل‌ها</button>
+  <button class="nav" data-page="method"><span><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#book-open"></use></svg></span> روش، داده و فایل‌ها</button>
  </nav>
- <div class="sidebar-foot"><span class="live-dot"></span> تحلیل از دیتابیس SQLite<small>اعداد واقعی · فیلترهای تعاملی</small></div>
+ <div class="sidebar-foot"><span class="live-dot"></span> گزارش تعاملی بازار دارو<small>داده‌های آمارنامه دارویی</small></div>
 </aside>
 <div class="shell">
- <header class="topbar"><div class="breadcrumb">هوش بازار دارویی <span>/</span> <b id="breadcrumb">داشبورد بازار</b></div><div class="top-actions"><span class="period-badge">۱۴۰۱ — ۱۴۰۴</span><button id="reset" class="button subtle">↺ حالت اصلی تمرین</button><button id="export" class="button primary" disabled>↓ خروجی CSV</button></div></header>
+ <header class="topbar"><div class="breadcrumb">هوش بازار دارویی <span>/</span> <b id="breadcrumb">داشبورد بازار</b></div><div class="top-actions"><span class="period-badge">۱۴۰۱ — ۱۴۰۴</span><button id="reset" class="button subtle"><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#rotate-ccw"></use></svg> بازنشانی فیلترها</button><button id="export" class="button primary" disabled><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#download"></use></svg> دریافت CSV</button></div></header>
  <main>
   <div class="heading"><div><div class="eyebrow">IRAN PHARMACEUTICAL MARKET</div><h1 id="page-title">داشبورد بازار دارویی ایران</h1><p id="page-description">تصویری روشن از فروش، رشد و ترکیب بازار؛ بر پایه آمارنامه دارویی.</p></div><div class="heading-badge"><span class="live-dot"></span><span id="scope-label">مقایسه سالانه</span></div></div>
   <form id="filters" class="filters" aria-label="فیلترهای تحلیل">
@@ -32,10 +32,10 @@
    <label class="company-filter">تأمین‌کننده<input id="supplier" list="supplier-list" placeholder="همه تأمین‌کنندگان" autocomplete="off" disabled><datalist id="supplier-list"></datalist></label>
    <label class="company-filter">شرکت پخش<input id="distributor" list="distributor-list" placeholder="همه پخش‌کنندگان" autocomplete="off" disabled><datalist id="distributor-list"></datalist></label>
    <label>گروه درمانی<select id="atc" disabled><option value="">همه گروه‌ها</option></select></label>
-   <label>وضعیت نسخه<select id="otc" disabled><option value="-1">همه</option><option value="1">OTC · بدون نسخه</option><option value="0">Rx · نسخه‌ای</option><option value="2">نامشخص</option></select></label>
+   <label>وضعیت نسخه<select id="otc" disabled><option value="-1">همه</option><option value="1">OTC · بدون نسخه</option><option value="0">Rx · نسخه‌ای</option></select></label>
    <label>منشأ<select id="origin" disabled><option value="">همه</option></select></label>
    <label class="search-filter">جست‌وجوی محصول<input id="search" placeholder="نام دارو، برند یا IRC…" disabled></label>
-   <button class="button primary" id="apply" disabled type="submit">اعمال فیلتر</button>
+   <button class="button primary" id="apply" disabled type="submit"><svg class="icon" aria-hidden="true"><use href="vendor/lucide/sprite.svg#sliders-horizontal"></use></svg> اعمال فیلتر</button>
   </form>
   <div id="status" class="status" role="status" aria-live="polite"><span class="spinner"></span> در حال آماده‌سازی داشبورد…</div>
   <div id="active-filters" class="active-filters"></div>
