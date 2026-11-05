@@ -5,6 +5,8 @@
       "filters": {},
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -18,6 +20,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -31,6 +35,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -44,6 +50,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -57,6 +65,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -71,6 +81,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -85,6 +97,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -99,6 +113,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",
@@ -113,6 +129,8 @@
       },
       "queries_verified": [
         "totals",
+        "supplier_explorer",
+        "distributor_explorer",
         "suppliers",
         "distributors",
         "atc",

@@ -16,6 +16,26 @@ WITH filtered AS (SELECT * FROM v_sales_dashboard WHERE year IN (1401,1402)
  SUM(CASE WHEN atc_l1 IS NULL THEN source_rows ELSE 0 END) AS unknown_atc_rows
  FROM filtered GROUP BY year ORDER BY year;
 
+-- Optional. Supplier portfolio by year and ATC
+WITH filtered AS (SELECT * FROM v_sales_dashboard WHERE year IN (1401,1402)
+ AND (0 = 0 OR supplier_id = 0)
+ AND (0 = 0 OR distributor_id = 0)
+ AND ('' = '' OR COALESCE(atc_l1,'?') = '')
+ AND (-1 = -1 OR COALESCE(is_otc,2) = -1)
+ AND ('' = '' OR origin = '')
+ AND ('' = '' OR irc LIKE '%%' OR generic_name LIKE '%%'
+      OR brand_name_fa LIKE '%%' OR brand_name_en LIKE '%%')) SELECT supplier_id AS id,supplier_name AS name,year,COALESCE(atc_l1,'?') AS category,SUM(sales_consumer_rial) AS value,SUM(units_sold) AS volume FROM filtered WHERE supplier_id IS NOT NULL GROUP BY supplier_id,supplier_name,year,COALESCE(atc_l1,'?');
+
+-- Optional. Distributor portfolio by year and ATC
+WITH filtered AS (SELECT * FROM v_sales_dashboard WHERE year IN (1401,1402)
+ AND (0 = 0 OR supplier_id = 0)
+ AND (0 = 0 OR distributor_id = 0)
+ AND ('' = '' OR COALESCE(atc_l1,'?') = '')
+ AND (-1 = -1 OR COALESCE(is_otc,2) = -1)
+ AND ('' = '' OR origin = '')
+ AND ('' = '' OR irc LIKE '%%' OR generic_name LIKE '%%'
+      OR brand_name_fa LIKE '%%' OR brand_name_en LIKE '%%')) SELECT distributor_id AS id,distributor_name AS name,year,COALESCE(atc_l1,'?') AS category,SUM(sales_consumer_rial) AS value,SUM(units_sold) AS volume FROM filtered WHERE distributor_id IS NOT NULL GROUP BY distributor_id,distributor_name,year,COALESCE(atc_l1,'?');
+
 -- Q4 + Q5. Same top suppliers, ranked by target-year VALUE
 WITH filtered AS (SELECT * FROM v_sales_dashboard WHERE year IN (1401,1402)
  AND (0 = 0 OR supplier_id = 0)

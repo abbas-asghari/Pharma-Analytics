@@ -48,7 +48,7 @@ out={'status':'passed','filter_scenarios':report,'annual_partitions':'passed','t
 # Deliver readable executable SQL, default filters bound to the assignment years.
 def literal(v): return "'"+v.replace("'","''")+"'" if isinstance(v,str) else str(v)
 sections=['-- Run in SQLite on docs/data/dashboard.sqlite.\n-- Real queries used by docs/worker.js.\n-- Default: 1401 -> 1402; all companies/categories.\n']
-titles={'totals':'Q1. Annual sales value and volume','suppliers':'Q4 + Q5. Same top suppliers, ranked by target-year VALUE','distributors':'Q6 + Q7. Same top distributors, ranked by target-year VOLUME','atc':'Q8. ATC L1 sales, including Unknown','otc':'Q10. OTC / Rx / Unknown','origin':'Optional. Domestic / imported'}
+titles={'supplier_explorer':'Optional. Supplier portfolio by year and ATC','distributor_explorer':'Optional. Distributor portfolio by year and ATC','totals':'Q1. Annual sales value and volume','suppliers':'Q4 + Q5. Same top suppliers, ranked by target-year VALUE','distributors':'Q6 + Q7. Same top distributors, ranked by target-year VOLUME','atc':'Q8. ATC L1 sales, including Unknown','otc':'Q10. OTC / Rx / Unknown','origin':'Optional. Domestic / imported'}
 for key,sql in queries.items():
     for param in sorted(base,key=len,reverse=True):sql=sql.replace(':'+param,literal(base[param]))
     sections.append('-- '+titles[key]+'\n'+sql+';\n')
@@ -75,4 +75,4 @@ pg_text=pg_text.replace('SUM(source_rows)','COUNT(*)').replace('SUM(missing_valu
 # Flags are booleans in PostgreSQL, integers in SQLite.
 pg_text=pg_text.replace("COALESCE(is_otc,2)","COALESCE(CAST(is_otc AS INTEGER),2)").replace('is_otc=1','is_otc=TRUE').replace('is_otc=0','is_otc=FALSE')
 (ROOT/'sql/postgresql_queries.sql').write_text(pg_text,encoding='utf-8')
-print('Passed: 54 source-vs-browser query comparisons, annual partitions, independent top-10 rankings, integrity.')
+print(f'Passed: {len(cases)*len(queries)} source-vs-browser query comparisons, annual partitions, independent top-10 rankings, integrity.')

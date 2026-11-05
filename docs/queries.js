@@ -23,12 +23,15 @@ function companyQuery(role, metric) {
  FROM leaders t LEFT JOIN annual b ON b.id=t.id AND b.year=:base
  ORDER BY t.${metric} DESC,t.id`;
 }
+function explorerQuery(role){return `${BASE_SQL} SELECT ${role}_id AS id,${role}_name AS name,year,COALESCE(atc_l1,'?') AS category,SUM(sales_consumer_rial) AS value,SUM(units_sold) AS volume FROM filtered WHERE ${role}_id IS NOT NULL GROUP BY ${role}_id,${role}_name,year,COALESCE(atc_l1,'?')`;}
 const QUERY_DEFS = {
  totals: `${BASE_SQL} SELECT year,SUM(sales_consumer_rial) AS value,SUM(units_sold) AS volume,
  COUNT(DISTINCT irc) AS products,SUM(source_rows) AS source_rows,
  SUM(missing_value_rows) AS missing_value_rows,SUM(missing_volume_rows) AS missing_volume_rows,
  SUM(CASE WHEN atc_l1 IS NULL THEN source_rows ELSE 0 END) AS unknown_atc_rows
  FROM filtered GROUP BY year ORDER BY year`,
+ supplier_explorer: explorerQuery('supplier'),
+ distributor_explorer: explorerQuery('distributor'),
  suppliers: companyQuery('supplier','value'),
  distributors: companyQuery('distributor','volume'),
  atc: `${BASE_SQL} SELECT year,COALESCE(atc_l1,'?') AS category,
