@@ -45,34 +45,7 @@ for key,role,metric in [('suppliers','supplier','sales_consumer_rial'),('distrib
 assert web.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
 out={'status':'passed','filter_scenarios':report,'annual_partitions':'passed','top10_order':'passed','integrity':'ok','postgres_restore_tested':False}
 (ROOT/'evidence/validation.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
-# Deliver readable executable SQL, default filters bound to the assignment years.
-def literal(v): return "'"+v.replace("'","''")+"'" if isinstance(v,str) else str(v)
-sections=['-- Run in SQLite on docs/data/dashboard.sqlite.\n-- Real queries used by docs/worker.js.\n-- Default: 1401 -> 1402; all companies/categories.\n']
-titles={'supplier_explorer':'Optional. Supplier portfolio by year and ATC','distributor_explorer':'Optional. Distributor portfolio by year and ATC','totals':'Q1. Annual sales value and volume','suppliers':'Q4 + Q5. Same top suppliers, ranked by target-year VALUE','distributors':'Q6 + Q7. Same top distributors, ranked by target-year VOLUME','atc':'Q8. ATC L1 sales, including Unknown','otc':'Q10. OTC / Rx / Unknown','origin':'Optional. Domestic / imported'}
-for key,sql in queries.items():
-    for param in sorted(base,key=len,reverse=True):sql=sql.replace(':'+param,literal(base[param]))
-    sections.append('-- '+titles[key]+'\n'+sql+';\n')
-sections.append('''-- Q2 + Q3. Growth; baseline <= 0 is undefined (NULL).
-WITH a AS (SELECT year,SUM(sales_consumer_rial) AS value,SUM(units_sold) AS volume
-FROM fact_sales WHERE year IN (1401,1402) GROUP BY year)
-SELECT 100.0*(t.value-b.value)/NULLIF(CASE WHEN b.value>0 THEN b.value END,0) AS value_growth_pct,
-100.0*(t.volume-b.volume)/NULLIF(CASE WHEN b.volume>0 THEN b.volume END,0) AS volume_growth_pct
-FROM a b JOIN a t ON b.year=1401 AND t.year=1402;
-
--- Q9. Signed sales shares. A zero denominator produces NULL.
-WITH groups AS (SELECT year,COALESCE(atc_l1,'?') AS category,
-SUM(sales_consumer_rial) AS value,SUM(units_sold) AS volume
-FROM v_sales_dashboard WHERE year IN (1401,1402) GROUP BY year,COALESCE(atc_l1,'?'))
-SELECT *,100.0*value/NULLIF(SUM(value) OVER(PARTITION BY year),0) AS value_share_pct,
-100.0*volume/NULLIF(SUM(volume) OVER(PARTITION BY year),0) AS volume_share_pct
-FROM groups ORDER BY year,category;
-''')
-sql_text='\n'.join(sections)
-(ROOT/'sql/analytical_queries.sql').write_text(sql_text,encoding='utf-8')
-# PostgreSQL uses the original full-grain view; replace only source bookkeeping.
-pg_text=sql_text.replace('-- Run in SQLite on docs/data/dashboard.sqlite.','-- PostgreSQL: restore data/pharma_1401_1404.sql first.\nSET search_path TO pharma,public;')
-pg_text=pg_text.replace('SUM(source_rows)','COUNT(*)').replace('SUM(missing_value_rows)','SUM(CASE WHEN sales_consumer_rial IS NULL THEN 1 ELSE 0 END)').replace('SUM(missing_volume_rows)','SUM(CASE WHEN units_sold IS NULL THEN 1 ELSE 0 END)').replace('THEN source_rows ELSE 0','THEN 1 ELSE 0')
-# Flags are booleans in PostgreSQL, integers in SQLite.
-pg_text=pg_text.replace("COALESCE(is_otc,2)","COALESCE(CAST(is_otc AS INTEGER),2)").replace('is_otc=1','is_otc=TRUE').replace('is_otc=0','is_otc=FALSE')
-(ROOT/'sql/postgresql_queries.sql').write_text(pg_text,encoding='utf-8')
+# Rebuild the reader-friendly download files without changing browser queries.
+from build_query_downloads import build
+build()
 print(f'Passed: {len(cases)*len(queries)} source-vs-browser query comparisons, annual partitions, independent top-10 rankings, integrity.')

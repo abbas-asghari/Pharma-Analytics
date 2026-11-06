@@ -3,6 +3,8 @@ from pathlib import Path
 import json,shutil,zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
+from build_query_downloads import build
+build()
 docs=ROOT/'docs'
 figures=sorted((ROOT/'evidence/figures').glob('*.svg'))
 (docs/'figures').mkdir(exist_ok=True)
@@ -14,6 +16,7 @@ gallery+='</div></main></body></html>'
 (docs/'gallery.html').write_text(gallery,encoding='utf-8')
 shutil.copy2(ROOT/'README.md',docs/'downloads/methodology.md')
 shutil.copy2(ROOT/'sql/analytical_queries.sql',docs/'downloads/analytical_queries.sql')
+shutil.copy2(ROOT/'sql/postgresql_queries.sql',docs/'downloads/postgresql_queries.sql')
 with zipfile.ZipFile(docs/'downloads/figures.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
     for file in figures:z.write(file,file.name)
 archive=ROOT.parent/'pharma_dashboard_github.zip'
