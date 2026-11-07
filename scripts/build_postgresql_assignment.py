@@ -89,4 +89,6 @@ ORDER BY
 
 '''+ '\n\n'.join(answers)
     text=text.replace('FROM v_sales_dashboard','FROM pharma.v_sales_dashboard').replace('is_otc = 1','is_otc = TRUE').replace('is_otc = 0','is_otc = FALSE')
+    # Keep the downloadable SQL documentation in English.
+    text = '\n'.join(line for line in text.splitlines() if not (line.lstrip().startswith('--') and re.search(r'[\u0600-\u06ff]', line))) + '\n'
     (ROOT/'sql/postgresql_queries.sql').write_text(text,encoding='utf-8')
