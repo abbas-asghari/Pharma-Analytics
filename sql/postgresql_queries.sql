@@ -1,30 +1,22 @@
--- PHARMA ANALYTICS | Assignment queries
--- Engine: PostgreSQL. Restore data/pharma_1401_1404.sql first.
-SET search_path TO pharma, public;
--- Scope: 1401 -> 1402, all companies and products.
--- Run each section independently; every query is read-only.
--- Q4/Q5 share one result; Q6/Q7 share one result to preserve ranking.
--- value = IRR; volume = reported units; *_pct = percentage.
--- Interactive filters are implemented separately in docs/queries.js.
--- Always-true default filter conditions are omitted here for readability.
+-- PHARMA ANALYTICS | PostgreSQL | Questions 01-10
+-- ابتدا فایل data/pharma_1401_1404.sql را در دیتابیس وارد کنید.
+-- هر بخش را مستقل در Query Tool اجرا کنید؛ نام schema در کوئری‌ها مشخص است.
+-- دامنه: سال‌های ۱۴۰۱ و ۱۴۰۲، همه شرکت‌ها و محصولات.
+-- value: ریال | volume: واحد گزارش‌شده | growth_pct و share_pct: درصد
+-- سؤال ۵ ترتیب سؤال ۴ و سؤال ۷ ترتیب سؤال ۶ را حفظ می‌کند.
+-- سؤال‌های ۸ و ۹ گروه فاقد ATC را برای تطبیق با کل بازار حفظ می‌کنند.
+-- نمودار سایت گروه فاقد ATC را نمایش نمی‌دهد و درصدها را بر اقلام دارای ATC محاسبه می‌کند.
 
 -- ========================================================================
--- Q1 | Annual sales value and volume
--- Value: IRR at consumer price. Volume: reported units.
+-- QUESTION 01 / 10 | Sales Volume / Sales Value per Year
+-- سؤال ۱: مقایسه مجموع تعداد و مبلغ فروش سال‌های ۱۴۰۱ و ۱۴۰۲؛ مبلغ به ریال.
 -- ========================================================================
 
 SELECT
     year,
-    SUM(sales_consumer_rial) AS value,
-    SUM(units_sold) AS volume,
-    COUNT(DISTINCT irc) AS products,
-    COUNT(*) AS source_rows,
-    SUM(CASE WHEN sales_consumer_rial IS NULL THEN 1 ELSE 0 END) AS missing_value_rows,
-    SUM(CASE WHEN units_sold IS NULL THEN 1 ELSE 0 END) AS missing_volume_rows,
-    SUM(
-        CASE WHEN atc_l1 IS NULL THEN 1 ELSE 0 END
-    ) AS unknown_atc_rows
-FROM v_sales_dashboard
+    SUM(units_sold) AS sales_volume,
+    SUM(sales_consumer_rial) AS sales_value_rial
+FROM pharma.fact_sales
 WHERE year IN (1401, 1402)
 GROUP BY
     year
@@ -33,32 +25,28 @@ ORDER BY
 
 
 -- ========================================================================
--- Q2 + Q3 | Year-over-year value and volume growth
--- Growth is NULL when the baseline is zero or negative.
+-- QUESTION 02 / 10 | Sales Value Growth Rate (1401 -> 1402)
+-- سؤال 2: نرخ رشد مبلغ فروش؛ خروجی درصد است. پایه صفر یا منفی: NULL.
 -- ========================================================================
 
 WITH annual AS (
     SELECT
         year,
-        SUM(sales_consumer_rial) AS value,
-        SUM(units_sold) AS volume
-    FROM fact_sales
+        SUM(sales_consumer_rial) AS amount
+    FROM pharma.fact_sales
     WHERE year IN (1401, 1402)
     GROUP BY
         year
 )
 SELECT
-    100.0 * (target.value - base.value)
+    base.amount AS sales_value_1401,
+    target.amount AS sales_value_1402,
+    target.amount - base.amount AS absolute_change,
+    100.0 * (target.amount - base.amount)
     / NULLIF(
-        CASE WHEN base.value > 0 THEN base.value END,
+        CASE WHEN base.amount > 0 THEN base.amount END,
         0
-    ) AS value_growth_pct,
-
-    100.0 * (target.volume - base.volume)
-    / NULLIF(
-        CASE WHEN base.volume > 0 THEN base.volume END,
-        0
-    ) AS volume_growth_pct
+    ) AS growth_pct
 FROM annual AS base
 JOIN annual AS target
     ON base.year = 1401
@@ -66,8 +54,37 @@ JOIN annual AS target
 
 
 -- ========================================================================
--- Q4 + Q5 | Top 10 suppliers
--- Rank by 1402 VALUE; keep this order for volume. Absent baseline = 0.
+-- QUESTION 03 / 10 | Sales Volume Growth Rate (1401 -> 1402)
+-- سؤال 3: نرخ رشد تعداد فروش؛ خروجی درصد است. پایه صفر یا منفی: NULL.
+-- ========================================================================
+
+WITH annual AS (
+    SELECT
+        year,
+        SUM(units_sold) AS amount
+    FROM pharma.fact_sales
+    WHERE year IN (1401, 1402)
+    GROUP BY
+        year
+)
+SELECT
+    base.amount AS sales_volume_1401,
+    target.amount AS sales_volume_1402,
+    target.amount - base.amount AS absolute_change,
+    100.0 * (target.amount - base.amount)
+    / NULLIF(
+        CASE WHEN base.amount > 0 THEN base.amount END,
+        0
+    ) AS growth_pct
+FROM annual AS base
+JOIN annual AS target
+    ON base.year = 1401
+    AND target.year = 1402;
+
+
+-- ========================================================================
+-- QUESTION 04 / 10 | Sales Value per Supplier (Top 10, 1402)
+-- سؤال ۴: ده تأمین‌کننده برتر بر اساس مبلغ فروش ۱۴۰۲؛ نبود شرکت در ۱۴۰۱ برابر صفر است.
 -- ========================================================================
 
 WITH annual AS (
@@ -77,7 +94,7 @@ WITH annual AS (
         year,
         SUM(sales_consumer_rial) AS value,
         SUM(units_sold) AS volume
-    FROM v_sales_dashboard
+    FROM pharma.v_sales_dashboard
     WHERE year IN (1401, 1402)
         AND supplier_id IS NOT NULL
     GROUP BY
@@ -96,14 +113,19 @@ leaders AS (
     LIMIT 10
 )
 SELECT
-    t.id,
-    t.name,
-    t.value AS value_target,
-    t.volume AS volume_target,
-    CASE WHEN b.id IS NULL THEN 0 ELSE b.value END AS value_base,
-    CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END AS volume_base,
-    t.value - CASE WHEN b.id IS NULL THEN 0 ELSE b.value END AS value_change,
-    t.volume - CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END AS volume_change
+    ROW_NUMBER() OVER (
+        ORDER BY t.value DESC, t.id
+    ) AS rank_1402,
+    t.id AS supplier_id,
+    t.name AS supplier_name,
+    CASE WHEN b.id IS NULL THEN 0 ELSE b.value END AS value_1401,
+    t.value AS value_1402,
+    t.value - (CASE WHEN b.id IS NULL THEN 0 ELSE b.value END) AS absolute_change,
+    100.0 * (t.value - (CASE WHEN b.id IS NULL THEN 0 ELSE b.value END))
+    / NULLIF(
+        CASE WHEN b.value > 0 THEN b.value END,
+        0
+    ) AS growth_pct
 FROM leaders AS t
 LEFT JOIN annual AS b
     ON b.id = t.id
@@ -114,8 +136,61 @@ ORDER BY
 
 
 -- ========================================================================
--- Q6 + Q7 | Top 10 distributors
--- Rank by 1402 VOLUME; keep this order for value. Absent baseline = 0.
+-- QUESTION 05 / 10 | Sales Volume per Supplier (Same Top 10 as Q4)
+-- سؤال ۵: تعداد فروش دقیقاً همان شرکت‌ها و همان ترتیب سؤال ۴؛ رتبه‌بندی مجدد نمی‌شود.
+-- ========================================================================
+
+WITH annual AS (
+    SELECT
+        supplier_id AS id,
+        supplier_name AS name,
+        year,
+        SUM(sales_consumer_rial) AS value,
+        SUM(units_sold) AS volume
+    FROM pharma.v_sales_dashboard
+    WHERE year IN (1401, 1402)
+        AND supplier_id IS NOT NULL
+    GROUP BY
+        supplier_id,
+        supplier_name,
+        year
+),
+leaders AS (
+    SELECT
+        *
+    FROM annual
+    WHERE year = 1402
+    ORDER BY
+        value DESC,
+        id
+    LIMIT 10
+)
+SELECT
+    ROW_NUMBER() OVER (
+        ORDER BY t.value DESC, t.id
+    ) AS rank_1402,
+    t.id AS supplier_id,
+    t.name AS supplier_name,
+    CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END AS volume_1401,
+    t.volume AS volume_1402,
+    t.volume - (CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END) AS absolute_change,
+    100.0 * (t.volume - (CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END))
+    / NULLIF(
+        CASE WHEN b.volume > 0 THEN b.volume END,
+        0
+    ) AS growth_pct
+FROM leaders AS t
+LEFT JOIN annual AS b
+    ON b.id = t.id
+    AND b.year = 1401
+ORDER BY
+    t.value DESC,
+    t.id;
+
+
+-- ========================================================================
+-- QUESTION 06 / 10 | Sales Volume per Distributor (Top 10, 1402)
+-- سؤال ۶: ده پخش‌کننده برتر بر اساس تعداد فروش ۱۴۰۲ و تغییر نسبت به ۱۴۰۱.
 -- ========================================================================
 
 WITH annual AS (
@@ -125,7 +200,7 @@ WITH annual AS (
         year,
         SUM(sales_consumer_rial) AS value,
         SUM(units_sold) AS volume
-    FROM v_sales_dashboard
+    FROM pharma.v_sales_dashboard
     WHERE year IN (1401, 1402)
         AND distributor_id IS NOT NULL
     GROUP BY
@@ -144,14 +219,19 @@ leaders AS (
     LIMIT 10
 )
 SELECT
-    t.id,
-    t.name,
-    t.value AS value_target,
-    t.volume AS volume_target,
-    CASE WHEN b.id IS NULL THEN 0 ELSE b.value END AS value_base,
-    CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END AS volume_base,
-    t.value - CASE WHEN b.id IS NULL THEN 0 ELSE b.value END AS value_change,
-    t.volume - CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END AS volume_change
+    ROW_NUMBER() OVER (
+        ORDER BY t.volume DESC, t.id
+    ) AS rank_1402,
+    t.id AS distributor_id,
+    t.name AS distributor_name,
+    CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END AS volume_1401,
+    t.volume AS volume_1402,
+    t.volume - (CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END) AS absolute_change,
+    100.0 * (t.volume - (CASE WHEN b.id IS NULL THEN 0 ELSE b.volume END))
+    / NULLIF(
+        CASE WHEN b.volume > 0 THEN b.volume END,
+        0
+    ) AS growth_pct
 FROM leaders AS t
 LEFT JOIN annual AS b
     ON b.id = t.id
@@ -162,8 +242,61 @@ ORDER BY
 
 
 -- ========================================================================
--- Q8 | Sales by ATC Level 1
--- '?' retains unclassified sales for reconciliation to market totals.
+-- QUESTION 07 / 10 | Sales Value per Distributor (Same Top 10 as Q6)
+-- سؤال ۷: مبلغ فروش دقیقاً همان شرکت‌ها و همان ترتیب سؤال ۶؛ رتبه‌بندی مجدد نمی‌شود.
+-- ========================================================================
+
+WITH annual AS (
+    SELECT
+        distributor_id AS id,
+        distributor_name AS name,
+        year,
+        SUM(sales_consumer_rial) AS value,
+        SUM(units_sold) AS volume
+    FROM pharma.v_sales_dashboard
+    WHERE year IN (1401, 1402)
+        AND distributor_id IS NOT NULL
+    GROUP BY
+        distributor_id,
+        distributor_name,
+        year
+),
+leaders AS (
+    SELECT
+        *
+    FROM annual
+    WHERE year = 1402
+    ORDER BY
+        volume DESC,
+        id
+    LIMIT 10
+)
+SELECT
+    ROW_NUMBER() OVER (
+        ORDER BY t.volume DESC, t.id
+    ) AS rank_1402,
+    t.id AS distributor_id,
+    t.name AS distributor_name,
+    CASE WHEN b.id IS NULL THEN 0 ELSE b.value END AS value_1401,
+    t.value AS value_1402,
+    t.value - (CASE WHEN b.id IS NULL THEN 0 ELSE b.value END) AS absolute_change,
+    100.0 * (t.value - (CASE WHEN b.id IS NULL THEN 0 ELSE b.value END))
+    / NULLIF(
+        CASE WHEN b.value > 0 THEN b.value END,
+        0
+    ) AS growth_pct
+FROM leaders AS t
+LEFT JOIN annual AS b
+    ON b.id = t.id
+    AND b.year = 1401
+ORDER BY
+    t.volume DESC,
+    t.id;
+
+
+-- ========================================================================
+-- QUESTION 08 / 10 | Sales Value / Volume per ATC Level 1
+-- سؤال ۸: مبلغ و تعداد فروش هر گروه ATC در هر سال؛ ? شامل اقلام فاقد طبقه‌بندی است.
 -- ========================================================================
 
 SELECT
@@ -171,7 +304,7 @@ SELECT
     COALESCE(atc_l1, '?') AS category,
     SUM(sales_consumer_rial) AS value,
     SUM(units_sold) AS volume
-FROM v_sales_dashboard
+FROM pharma.v_sales_dashboard
 WHERE year IN (1401, 1402)
 GROUP BY
     year,
@@ -182,8 +315,8 @@ ORDER BY
 
 
 -- ========================================================================
--- Q9 | ATC share of annual market sales
--- Includes unclassified sales. Dashboard display uses valid ATC only.
+-- QUESTION 09 / 10 | Percent Stack Sales Value / Volume by ATC
+-- سؤال ۹: سهم درصدی هر گروه از کل فروش همان سال؛ جمع سهم‌ها ۱۰۰٪ است. گروه ? حفظ شده است.
 -- ========================================================================
 
 WITH groups AS (
@@ -192,7 +325,7 @@ WITH groups AS (
         COALESCE(atc_l1, '?') AS category,
         SUM(sales_consumer_rial) AS value,
         SUM(units_sold) AS volume
-    FROM v_sales_dashboard
+    FROM pharma.v_sales_dashboard
     WHERE year IN (1401, 1402)
     GROUP BY
         year,
@@ -223,8 +356,8 @@ ORDER BY
 
 
 -- ========================================================================
--- Q10 | OTC versus prescription sales
--- Unknown status is retained; it is never assumed to be Rx.
+-- QUESTION 10 / 10 | Sales Value / Volume per OTC Status
+-- سؤال ۱۰: مقایسه OTC و Rx با استفاده از پرچم موجود؛ وضعیت خالی Unknown است.
 -- ========================================================================
 
 WITH classified AS (
@@ -237,7 +370,7 @@ WITH classified AS (
         END AS category,
         sales_consumer_rial,
         units_sold
-    FROM v_sales_dashboard
+    FROM pharma.v_sales_dashboard
     WHERE year IN (1401, 1402)
 )
 SELECT
@@ -249,70 +382,6 @@ FROM classified
 GROUP BY
     year,
     category
-ORDER BY
-    category,
-    year;
-
-
--- ========================================================================
--- APPENDIX | Supplier portfolio
--- Optional explorer input: aggregate before choosing period and ranking.
--- ========================================================================
-
-SELECT
-    supplier_id AS id,
-    supplier_name AS name,
-    year,
-    COALESCE(atc_l1, '?') AS category,
-    SUM(sales_consumer_rial) AS value,
-    SUM(units_sold) AS volume
-FROM v_sales_dashboard
-WHERE year IN (1401, 1402)
-    AND supplier_id IS NOT NULL
-GROUP BY
-    supplier_id,
-    supplier_name,
-    year,
-    COALESCE(atc_l1, '?');
-
-
--- ========================================================================
--- APPENDIX | Distributor portfolio
--- Optional explorer input: aggregate before choosing period and ranking.
--- ========================================================================
-
-SELECT
-    distributor_id AS id,
-    distributor_name AS name,
-    year,
-    COALESCE(atc_l1, '?') AS category,
-    SUM(sales_consumer_rial) AS value,
-    SUM(units_sold) AS volume
-FROM v_sales_dashboard
-WHERE year IN (1401, 1402)
-    AND distributor_id IS NOT NULL
-GROUP BY
-    distributor_id,
-    distributor_name,
-    year,
-    COALESCE(atc_l1, '?');
-
-
--- ========================================================================
--- APPENDIX | Domestic versus imported
--- Optional breakdown by origin.
--- ========================================================================
-
-SELECT
-    year,
-    COALESCE(origin, 'نامشخص') AS category,
-    SUM(sales_consumer_rial) AS value,
-    SUM(units_sold) AS volume
-FROM v_sales_dashboard
-WHERE year IN (1401, 1402)
-GROUP BY
-    year,
-    COALESCE(origin, 'نامشخص')
 ORDER BY
     category,
     year;

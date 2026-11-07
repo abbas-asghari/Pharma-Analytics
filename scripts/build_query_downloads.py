@@ -225,7 +225,8 @@ ORDER BY
     (ROOT/'sql/analytical_queries.sql').write_text(text,encoding='utf-8')
     pg=text.replace('-- Engine: SQLite. Open docs/data/dashboard.sqlite before running.', '-- Engine: PostgreSQL. Restore data/pharma_1401_1404.sql first.\nSET search_path TO pharma, public;')
     pg=pg.replace('SUM(source_rows)','COUNT(*)').replace('SUM(missing_value_rows)','SUM(CASE WHEN sales_consumer_rial IS NULL THEN 1 ELSE 0 END)').replace('SUM(missing_volume_rows)','SUM(CASE WHEN units_sold IS NULL THEN 1 ELSE 0 END)').replace('THEN source_rows ELSE 0','THEN 1 ELSE 0').replace('is_otc = 1','is_otc = TRUE').replace('is_otc = 0','is_otc = FALSE')
-    (ROOT/'sql/postgresql_queries.sql').write_text(pg,encoding='utf-8')
+    from build_postgresql_assignment import build_postgresql
+    build_postgresql(sections)
     print('Generated readable SQLite and PostgreSQL query files.')
 
 if __name__=='__main__':
